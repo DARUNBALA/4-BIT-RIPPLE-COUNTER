@@ -23,18 +23,74 @@ In timing diagram Q0 is changing as soon as the negative edge of clock pulse is 
 ![image](https://github.com/naavaneetha/4-BIT-RIPPLE-COUNTER/assets/154305477/85e1958a-2fc1-49bb-9a9f-d58ccbf3663c)
 
 **Procedure**
+1.Create Project: Open Quartus Prime, start a new project, and name it ripple_counter.
 
+2.Write Code: Create a new Verilog HDL File, write the 4-bit ripple counter code, and save it.
+
+3.Compile: Click Start Compilation and ensure there are zero errors.
+
+4.Create Waveform: Open a new Vector Waveform File (VWF) and insert the clk, reset, and q[3:0] pins.
+
+5.Set Inputs: Apply a toggling clock signal to clk and set reset to 0.
+
+6.Simulate: Click Run Functional Simulation to generate the output waveforms.
 /* write all the steps invloved */
 
 **PROGRAM**
 
-/* Program for 4 Bit Ripple Counter and verify its truth table in quartus using Verilog programming.
+```
+module exp6RC(q, clk, reset);
 
- Developed by: RegisterNumber:
+output [3:0] q;
+input clk, reset;
+
+T_FF tff0(q[0], clk, reset);
+T_FF tff1(q[1], q[0], reset);
+T_FF tff2(q[2], q[1], reset);
+T_FF tff3(q[3], q[2], reset);
+
+endmodule
+
+
+module T_FF(q, clk, reset);
+
+output q;
+input clk, reset;
+
+wire d;
+
+D_FF dff0(q, d, clk, reset);
+
+not n1(d, q);
+
+endmodule
+
+
+module D_FF(q, d, clk, reset);
+
+output q;
+input d, clk, reset;
+
+reg q;
+
+always @(negedge clk or posedge reset)
+begin
+    if (reset)
+        q = 1'b0;
+    else
+        q = d;
+end
+
+endmodule
+```
+ Developed by:Darunbala.S  RegisterNumber:212225230040
 */
 
 **RTL LOGIC FOR 4 Bit Ripple Counter**
+<img width="1917" height="1012" alt="image" src="https://github.com/user-attachments/assets/613ef1af-d06a-4e7f-a333-4c87951a37da" />
 
 **TIMING DIGRAMS FOR 4 Bit Ripple Counter**
+<img width="1917" height="1020" alt="image" src="https://github.com/user-attachments/assets/7153d245-aed4-48d8-9dde-438834f19385" />
 
 **RESULTS**
+The functional simulation verified that the 4-bit ripple counter works correctly.Counting Sequence: With every clock pulse, the output increments sequentially in binary from 0000 (0) to 1111 (15).Rollover: After reaching 1111, the counter automatically resets and rolls over back to 0000 on the next clock pulse.
